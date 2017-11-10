@@ -1,0 +1,23 @@
+#!/usr/bin/python2
+
+import math
+import sys
+
+def rsaDecrypt(c, d, N, lenghN):
+    lengthr = int(math.ceil(lenghN / 2.0)) - 2
+    paddedmessage = pow(c, d, N)
+    messagestring = bin(paddedmessage)[2:][lengthr:]
+    return int(messagestring, 2)
+
+if __name__ == "__main__":
+    secretkeyfile = open(sys.argv[sys.argv.index("-k") + 1])
+    secretkey = secretkeyfile.read().split()
+    inputfile = open(sys.argv[sys.argv.index("-i") + 1])
+    inputmessage = int(inputfile.read().strip())
+    outputfile = open(sys.argv[sys.argv.index("-o") + 1], "w+")
+
+    message = rsaDecrypt(inputmessage, int(secretkey[2]), int(secretkey[1]), int(secretkey[0]))
+    outputfile.write(str(message))
+    secretkeyfile.close()
+    inputfile.close()
+    outputfile.close()

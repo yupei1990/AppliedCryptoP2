@@ -1,0 +1,42 @@
+#!/usr/bin/python2
+
+import sys
+from Crypto.Util import number
+import random
+
+publickeysets = [3, 5, 7, 11, 17, 19, 23, 257]
+
+def keygeneration(n):
+    p = number.getPrime(n)
+    q = number.getPrime(n)
+
+    while p == q:
+        p = number.getPrime(n)
+        q = number.getPrime(n)
+
+    N = p * q
+    phiN = (p - 1) * (q - 1)
+    e = random.choice(publickeysets)
+    while phiN % e == 0:
+        e = random.choice(publickeysets)
+    d = number.inverse(e, phiN)
+    return ((N, e), (N, d))
+
+
+if __name__ == "__main__":
+    nbits = sys.argv[sys.argv.index("-n") + 1]
+    publickey = sys.argv[sys.argv.index("-p") + 1]
+    secretkey = sys.argv[sys.argv.index("-s") + 1]
+
+    keypair = keygeneration(int(nbits))
+    lengthN = keypair[0][0].bit_length()
+
+    publickeyfile = open(publickey, "w+")
+    publicrecord = str(lengthN) + "\n" + str(keypair[0][0]) + "\n" + str(keypair[0][1])
+    publickeyfile.write(publicrecord)
+    publickeyfile.close()
+
+    secretkeyfile = open(secretkey, "w+")
+    secretrecord = str(lengthN) + "\n" + str(keypair[1][0]) + "\n" + str(keypair[1][1])
+    secretkeyfile.write(secretrecord)
+    secretkeyfile.close()

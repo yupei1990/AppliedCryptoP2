@@ -1,0 +1,19 @@
+This folder contains three executable programs. There are rsa-keygen to generate the public-private key pair of RSA encryption system, rsa-enc to encrypt the message, and rss-dec to decrypt the message.
+
+To execute rsa-keygen, input 
+
+./rsa-keygen -p <public key file> -s <private key file> -n <security parameter n>
+
+into terminal. After that, rsa-keygen will generate two files, namely the files storing public key, private key respectively. The parameter n here is the length of p and/or q.
+
+To execute rsa-enc, input
+
+./rsa-enc -i <input fle> -o <output file> -k <public key file>
+
+into terminal. The input file contains an integer which was assumed to be an element in the group. After that, rsa-enc will generate the output file which stores the cipher of the input message.
+
+To decrypt the cipher, input 
+
+./rsa-dec -i <cipher file> -o <output recover file> -k <private key file>
+
+into terminal. After that, rsa-dec will generate the output recover file stores the recovered message, which is believed to be the same as message stored in input file.
